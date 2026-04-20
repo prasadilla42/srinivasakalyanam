@@ -1,0 +1,14 @@
+{
+  "yajamani": 0,
+  "free": 1,
+  "freeTickets": [
+    {
+      "name": "prasadarao Illa",
+      "email": "prasadilla42@gmail.com",
+      "phone": "07448666599",
+      "quantity": 1,
+      "whatsappRequested": true,
+      "date": "2026-04-11T13:33:03.142Z"
+    }
+  ]
+}
