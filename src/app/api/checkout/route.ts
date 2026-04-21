@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { query, initializeDb } from '../db';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
   apiVersion: '2023-10-16' as any,
 });
-import { kv } from '@vercel/kv';
 
 export async function POST(req: Request) {
   try {
@@ -22,13 +22,19 @@ export async function POST(req: Request) {
     }
 
     if (ticketType === 'yajamani') {
-      const currentYajamani = (await kv.get<number>('count_yajamani')) || 0;
+      await initializeDb();
+      const yajamaniResult = await query("SELECT SUM(quantity) as val FROM tickets WHERE type = 'yajamani'");
+      const currentYajamani = parseInt(yajamaniResult.rows[0].val || '0', 10);
       
       if (currentYajamani + quantity > 30) {
         return NextResponse.json({ error: 'Sold out! Not enough Yajamani tickets remaining.' }, { status: 400 });
       }
       
-      await kv.incrby('count_yajamani', quantity);
+      // Initially, we increment the count eagerly. A better way in production is to wait for standard Stripe webhooks!
+      await query(
+        "INSERT INTO tickets (type, quantity) VALUES ($1, $2)",
+        ['yajamani', quantity]
+      );
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -63,3 +69,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
