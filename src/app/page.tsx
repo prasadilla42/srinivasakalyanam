@@ -122,7 +122,7 @@ export default function Home() {
       <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="/hero-image.jpg" 
+            src="/hero-image.JPG" 
             alt="Srinivasakalyanam Event" 
             className="w-full h-full object-cover opacity-60"
           />

@@ -4,8 +4,7 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
   apiVersion: '2023-10-16' as any,
 });
-import fs from 'fs';
-import path from 'path';
+import { kv } from '@vercel/kv';
 
 export async function POST(req: Request) {
   try {
@@ -23,18 +22,13 @@ export async function POST(req: Request) {
     }
 
     if (ticketType === 'yajamani') {
-      const dataPath = path.join(process.cwd(), 'data.json');
-      let data: any = { yajamani: 0, free: 0, freeTickets: [] };
-      if (fs.existsSync(dataPath)) {
-        data = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-      }
+      const currentYajamani = (await kv.get<number>('count_yajamani')) || 0;
       
-      if (data.yajamani + quantity > 30) {
+      if (currentYajamani + quantity > 30) {
         return NextResponse.json({ error: 'Sold out! Not enough Yajamani tickets remaining.' }, { status: 400 });
       }
       
-      data.yajamani += quantity;
-      fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+      await kv.incrby('count_yajamani', quantity);
     }
 
     const session = await stripe.checkout.sessions.create({
