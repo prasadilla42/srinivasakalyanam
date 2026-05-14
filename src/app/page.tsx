@@ -22,7 +22,7 @@ export default function Home() {
 
   const fetchCounts = async () => {
     try {
-      const res = await fetch('/api/tickets-count');
+      const res = await fetch(`/api/tickets-count?t=${new Date().getTime()}`, { cache: 'no-store' });
       const data = await res.json();
       setCounts(data);
     } catch (e) { }

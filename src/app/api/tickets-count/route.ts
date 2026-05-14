@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { query, initializeDb } from '../db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     await initializeDb();

@@ -6,10 +6,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder'
   apiVersion: '2023-10-16' as any,
 });
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
 export async function POST(req: Request) {
   try {
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     const body = await req.text();
     const signature = req.headers.get('stripe-signature') as string;
 
@@ -27,7 +26,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: err.message }, { status: 400 });
     }
 
-    if (event.type === 'checkout.session.completed') {
+    if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
       const session = event.data.object as Stripe.Checkout.Session;
       
       const ticketType = session.metadata?.ticketType;
