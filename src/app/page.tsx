@@ -25,7 +25,7 @@ export default function Home() {
       const res = await fetch('/api/tickets-count');
       const data = await res.json();
       setCounts(data);
-    } catch(e) { }
+    } catch (e) { }
   };
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function Home() {
       if (data.success) {
         alert('Tickets booked successfully!');
         if (formData.whatsappRequested) {
-          window.open(process.env.NEXT_PUBLIC_WHATSAPP_LINK || "https://chat.whatsapp.com/placeholder", "_blank");
+          window.open(process.env.NEXT_PUBLIC_WHATSAPP_LINK || "https://chat.whatsapp.com/KNIYjnGf7SBC3U1Mx3aJIb?mode=gi_t", "_blank");
         }
         await fetchCounts();
       } else {
@@ -121,14 +121,14 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/hero-image.JPG" 
-            alt="Srinivasakalyanam Event" 
+          <img
+            src="/hero-image.JPG"
+            alt="Srinivasakalyanam Event"
             className="w-full h-full object-cover opacity-60"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-neutral-900/50" />
         </div>
-        
+
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto mt-20">
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 drop-shadow-sm">
             Srinivasakalyanam 2026
@@ -153,9 +153,9 @@ export default function Home() {
       {/* Booking Section */}
       <section className="max-w-6xl mx-auto px-6 mt-16 z-20 relative">
         <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center tracking-tight">Secure Your Place</h2>
-        
+
         <div className="grid lg:grid-cols-2 gap-8">
-          
+
           {/* Yajamani Ticket */}
           <div className="bg-gradient-to-br from-neutral-800 to-neutral-800/50 border border-amber-500/30 p-8 rounded-3xl shadow-[0_0_40px_rgba(245,158,11,0.1)] hover:shadow-[0_0_50px_rgba(245,158,11,0.2)] transition-all duration-300 flex flex-col group relative overflow-hidden">
             <div className="mb-6 relative z-10">
@@ -169,7 +169,7 @@ export default function Home() {
             <div className="text-4xl font-black mb-8 text-amber-500 relative z-10 tracking-tight">
               £51 <span className="text-lg text-neutral-500 font-normal">/ family</span>
             </div>
-            
+
             <div className="mt-auto relative z-10 space-y-6">
               {!isYajamaniSoldOut ? (
                 <>
@@ -181,7 +181,7 @@ export default function Home() {
                       <button type="button" onClick={() => setYajamaniTickets(Math.min(30 - counts.yajamani, yajamaniTickets + 1))} className="w-10 h-10 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-white flex items-center justify-center transition-colors font-bold text-lg hover:text-amber-500">+</button>
                     </div>
                   </div>
-                  <button 
+                  <button
                     onClick={handleCheckoutYajamani}
                     disabled={loading}
                     className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-amber-500/25 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center text-lg"
@@ -210,22 +210,22 @@ export default function Home() {
             <div className="text-4xl font-black mb-8 relative z-10 tracking-tight">
               Free
             </div>
-            
+
             <div className="mt-auto relative z-10">
               {!isFreeSoldOut ? (
                 <form onSubmit={handleFreeTicket} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-neutral-300 mb-1">Name</label>
-                    <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white" />
+                    <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-neutral-300 mb-1">Email</label>
-                      <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white" />
+                      <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-neutral-300 mb-1">Phone</label>
-                      <input required type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white" />
+                      <input required type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full bg-neutral-900 border border-neutral-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white" />
                     </div>
                   </div>
                   <div>
@@ -237,11 +237,11 @@ export default function Home() {
                     </div>
                   </div>
                   <label className="flex items-center gap-3 bg-neutral-900/50 p-4 rounded-xl border border-neutral-700 cursor-pointer hover:bg-neutral-800 transition-colors">
-                    <input type="checkbox" checked={formData.whatsappRequested} onChange={e => setFormData({...formData, whatsappRequested: e.target.checked})} className="w-5 h-5 rounded border-neutral-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-neutral-900 bg-neutral-700" />
+                    <input type="checkbox" checked={formData.whatsappRequested} onChange={e => setFormData({ ...formData, whatsappRequested: e.target.checked })} className="w-5 h-5 rounded border-neutral-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-neutral-900 bg-neutral-700" />
                     <span className="text-sm font-medium text-neutral-300">Join our WhatsApp group for updates</span>
                   </label>
 
-                  <button 
+                  <button
                     type="submit"
                     disabled={loading}
                     className="w-full bg-white text-black hover:bg-neutral-200 font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center text-lg mt-4"
@@ -275,12 +275,12 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-bold mb-2">Donate for Food</h3>
             <p className="text-sm text-neutral-400 mb-6 flex-1">Help us provide Annadanam (free meals) to all attendees.</p>
-            
+
             <div className="w-full">
               <label className="block text-xs text-neutral-400 mb-1 text-left">Custom Amount (£)</label>
               <div className="flex bg-neutral-900 border border-neutral-700 rounded-xl overflow-hidden mb-4">
                 <span className="flex items-center justify-center px-4 bg-neutral-800 text-neutral-400 font-bold">£</span>
-                <input type="number" min="1" value={donationAmount.Food} onChange={(e) => setDonationAmount({...donationAmount, Food: Number(e.target.value)})} className="w-full bg-transparent px-3 py-3 focus:outline-none text-white font-semibold" />
+                <input type="number" min="1" value={donationAmount.Food} onChange={(e) => setDonationAmount({ ...donationAmount, Food: Number(e.target.value) })} className="w-full bg-transparent px-3 py-3 focus:outline-none text-white font-semibold" />
               </div>
               <button disabled={loading} onClick={() => handleDonate('Food')} className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-xl transition-colors text-sm">
                 Donate Now
@@ -295,12 +295,12 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-bold mb-2">Donate for Hall</h3>
             <p className="text-sm text-neutral-400 mb-6 flex-1">Support the costs of securing the venue.</p>
-            
+
             <div className="w-full">
               <label className="block text-xs text-neutral-400 mb-1 text-left">Custom Amount (£)</label>
               <div className="flex bg-neutral-900 border border-neutral-700 rounded-xl overflow-hidden mb-4">
                 <span className="flex items-center justify-center px-4 bg-neutral-800 text-neutral-400 font-bold">£</span>
-                <input type="number" min="1" value={donationAmount.Hall} onChange={(e) => setDonationAmount({...donationAmount, Hall: Number(e.target.value)})} className="w-full bg-transparent px-3 py-3 focus:outline-none text-white font-semibold" />
+                <input type="number" min="1" value={donationAmount.Hall} onChange={(e) => setDonationAmount({ ...donationAmount, Hall: Number(e.target.value) })} className="w-full bg-transparent px-3 py-3 focus:outline-none text-white font-semibold" />
               </div>
               <button disabled={loading} onClick={() => handleDonate('Hall')} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-xl transition-colors text-sm">
                 Donate Now
@@ -315,12 +315,12 @@ export default function Home() {
             </div>
             <h3 className="text-xl font-bold mb-2">Donate for Flowers</h3>
             <p className="text-sm text-neutral-400 mb-6 flex-1">Contribute to the beautiful floral decorations.</p>
-            
+
             <div className="w-full">
               <label className="block text-xs text-neutral-400 mb-1 text-left">Custom Amount (£)</label>
               <div className="flex bg-neutral-900 border border-neutral-700 rounded-xl overflow-hidden mb-4">
                 <span className="flex items-center justify-center px-4 bg-neutral-800 text-neutral-400 font-bold">£</span>
-                <input type="number" min="1" value={donationAmount.Flowers} onChange={(e) => setDonationAmount({...donationAmount, Flowers: Number(e.target.value)})} className="w-full bg-transparent px-3 py-3 focus:outline-none text-white font-semibold" />
+                <input type="number" min="1" value={donationAmount.Flowers} onChange={(e) => setDonationAmount({ ...donationAmount, Flowers: Number(e.target.value) })} className="w-full bg-transparent px-3 py-3 focus:outline-none text-white font-semibold" />
               </div>
               <button disabled={loading} onClick={() => handleDonate('Flowers')} className="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-4 rounded-xl transition-colors text-sm">
                 Donate Now

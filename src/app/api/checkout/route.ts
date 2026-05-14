@@ -29,12 +29,6 @@ export async function POST(req: Request) {
       if (currentYajamani + quantity > 30) {
         return NextResponse.json({ error: 'Sold out! Not enough Yajamani tickets remaining.' }, { status: 400 });
       }
-      
-      // Initially, we increment the count eagerly. A better way in production is to wait for standard Stripe webhooks!
-      await query(
-        "INSERT INTO tickets (type, quantity) VALUES ($1, $2)",
-        ['yajamani', quantity]
-      );
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -59,6 +53,7 @@ export async function POST(req: Request) {
       cancel_url: `${req.headers.get('origin')}/cancel`,
       metadata: {
         ticketType,
+        quantity: quantity.toString(),
         attendees: attendees ? attendees.toString() : '1'
       }
     });
