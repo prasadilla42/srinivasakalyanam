@@ -1,6 +1,46 @@
 import Link from 'next/link';
+import Stripe from 'stripe';
+import { query, initializeDb } from '../api/db';
 
-export default function Success() {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
+  apiVersion: '2023-10-16' as any,
+});
+
+export default async function Success({ searchParams }: { searchParams: Promise<{ session_id?: string }> }) {
+  const resolvedParams = await searchParams;
+  const session_id = resolvedParams.session_id;
+
+  if (session_id) {
+    try {
+      const session = await stripe.checkout.sessions.retrieve(session_id);
+      
+      if (session.payment_status === 'paid') {
+        const ticketType = session.metadata?.ticketType;
+        const quantity = parseInt(session.metadata?.quantity || '1', 10);
+
+        if (ticketType === 'yajamani' || ticketType === 'normal') {
+          await initializeDb();
+          const name = session.customer_details?.name || 'Unknown';
+          const email = session.customer_details?.email || 'Unknown';
+
+          try {
+            await query(
+              "INSERT INTO tickets (type, quantity, name, email, stripe_session_id) VALUES ($1, $2, $3, $4, $5)",
+              [ticketType, quantity, name, email, session.id]
+            );
+            console.log(`Success Page: Inserted ${quantity} ${ticketType} tickets for ${email}`);
+          } catch (e: any) {
+            if (e.code !== '23505') { // Ignore duplicate key errors (already inserted by webhook)
+              console.error("Failed to insert on success page:", e);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error("Error verifying session on success page:", e);
+    }
+  }
+
   const whatsappLink = process.env.NEXT_PUBLIC_WHATSAPP_LINK || "https://chat.whatsapp.com/FkZbj7LGDfn3SmIhmHqcPm?mode=gi_t";
 
   return (

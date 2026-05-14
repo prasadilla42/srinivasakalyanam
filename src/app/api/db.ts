@@ -28,9 +28,16 @@ export async function initializeDb() {
       email VARCHAR(255),
       phone VARCHAR(50),
       whatsapp_requested BOOLEAN,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      stripe_session_id VARCHAR(255) UNIQUE
     );
   `);
+  
+  try {
+    await query(`ALTER TABLE tickets ADD COLUMN stripe_session_id VARCHAR(255) UNIQUE;`);
+  } catch (e) {
+    // Column might already exist, ignore error
+  }
   
   dbInitialized = true;
 }

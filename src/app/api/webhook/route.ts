@@ -40,11 +40,20 @@ export async function POST(req: Request) {
         const name = session.customer_details?.name || 'Unknown';
         const email = session.customer_details?.email || 'Unknown';
         
-        await query(
-          "INSERT INTO tickets (type, quantity, name, email) VALUES ($1, $2, $3, $4)",
-          [ticketType, quantity, name, email]
-        );
-        console.log(`Successfully inserted ${quantity} ${ticketType} tickets for ${email}`);
+        try {
+          await query(
+            "INSERT INTO tickets (type, quantity, name, email, stripe_session_id) VALUES ($1, $2, $3, $4, $5)",
+            [ticketType, quantity, name, email, session.id]
+          );
+          console.log(`Successfully inserted ${quantity} ${ticketType} tickets for ${email}`);
+        } catch (e: any) {
+          // If error is unique constraint violation, it means it was already inserted!
+          if (e.code === '23505') {
+            console.log(`Session ${session.id} already processed.`);
+          } else {
+            throw e;
+          }
+        }
       }
     }
 
