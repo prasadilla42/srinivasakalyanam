@@ -46,6 +46,13 @@ export async function POST(req: Request) {
             [ticketType, quantity, name, email, session.id]
           );
           console.log(`Successfully inserted ${quantity} ${ticketType} tickets for ${email}`);
+          
+          try {
+            const { sendConfirmationEmail } = await import('@/lib/email');
+            await sendConfirmationEmail(email, ticketType, quantity, name);
+          } catch (emailErr) {
+            console.error('Failed to send webhook ticket email:', emailErr);
+          }
         } catch (e: any) {
           // If error is unique constraint violation, it means it was already inserted!
           if (e.code === '23505') {

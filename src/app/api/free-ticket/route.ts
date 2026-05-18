@@ -21,6 +21,13 @@ export async function POST(req: Request) {
       ['free', quantity, name, email, phone, whatsappRequested]
     );
 
+    try {
+      const { sendConfirmationEmail } = await import('@/lib/email');
+      await sendConfirmationEmail(email, 'free', quantity, name);
+    } catch (emailErr) {
+      console.error('Failed to send free ticket email:', emailErr);
+    }
+
     return NextResponse.json({ success: true });
   } catch (err: any) {
     console.error('DB Error:', err);

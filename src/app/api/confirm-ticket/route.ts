@@ -33,6 +33,13 @@ export async function GET(req: Request) {
             [ticketType, quantity, name, email, session.id]
           );
           console.log(`Success Page Verification: Inserted ${quantity} ${ticketType} tickets for ${email}`);
+
+          try {
+            const { sendConfirmationEmail } = await import('@/lib/email');
+            await sendConfirmationEmail(email, ticketType, quantity, name);
+          } catch (emailErr) {
+            console.error('Failed to send confirm-ticket email:', emailErr);
+          }
         } catch (e: any) {
           // If error is unique constraint violation, it means webhook already inserted it!
           if (e.code === '23505') {
